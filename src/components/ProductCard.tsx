@@ -1,33 +1,34 @@
+import type { IProduct } from "../interfaces/intrface";
 import Button from "../ui/Button";
+import { textSlicer } from "../utils";
 import Image from "./Image";
 
-interface IProductCardProps {}
+interface IProductCardProps {
+  product: IProduct;
+}
 
-function ProductCard({}: IProductCardProps) {
+function ProductCard({ product }: IProductCardProps) {
   return (
-    <div className="flex  flex-col p-2 border rounded-md">
+    <div className=" max-w-sm md:max-w-lg mx-auto md:mx-0 flex flex-col p-2 border rounded-md">
       <Image
-        url="https://images.unsplash.com/photo-1542291026-7eec264c27ff?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-        alt="product one"
-        className="rounded-md mb-2"
+        url={product.imageURL}
+        alt={product.title}
+        className="rounded-md  h-52 lg:object-cover"
       />
-      <h3>product one</h3>
-      <p>
-        Lorem, ipsum dolor sit amet consectetur adipisicing elit. Dolor
-        dignissimos animi architecto necessitatibus a quo eos vero
-        molestias{" "}
-      </p>
+      <h3>{product.title}</h3>
+      <p>{textSlicer(product.description)}</p>
       <div className="flex gap-1 items-center my-4">
-        <span className="w-5 h-5 bg-red-600 rounded-full cursor-pointer"></span>
-        <span className="w-5 h-5 bg-blue-500 rounded-full cursor-pointer"></span>
-        <span className="w-5 h-5 bg-amber-800 rounded-full cursor-pointer"></span>
+        <span className="w-5 h-5 bg-red-400 rounded-full cursor-pointer"></span>
+        <span className="w-5 h-5 bg-red-400 rounded-full cursor-pointer"></span>
+        <span className="w-5 h-5 bg-red-400 rounded-full cursor-pointer"></span>
+        <span className="w-5 h-5 bg-red-400 rounded-full cursor-pointer"></span>
       </div>
 
       <div className="flex  justify-between items-center">
         <span className="">5000$</span>
         <Image
-          url="https://images.unsplash.com/photo-1542291026-7eec264c27ff?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-          alt="product one"
+          url={product.imageURL}
+          alt={product.title}
           className="w-10 h-10 rounded-full"
         />
       </div>
