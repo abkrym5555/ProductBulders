@@ -54,7 +54,7 @@ function App() {
         type={input.type}
         id={input.id}
         name={input.name}
-        value={""}
+        value={prouduct[input.name]}
         onChange={onChangeHandler}
       />
     </div>
