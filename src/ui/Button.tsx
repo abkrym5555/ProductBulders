@@ -14,7 +14,7 @@ function Button({
 }: IButtonProps) {
   return (
     <button
-      className={`${className} uppercase text-white ${width} py-2 rounded-md`}
+      className={`${className} uppercase text-white ${width} py-2 rounded-md cursor-pointer transition duration-300`}
       {...rest}
     >
       {children}

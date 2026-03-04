@@ -19,10 +19,12 @@ function ProductCard({ product }: IProductCardProps) {
       <h3>{product.title}</h3>
       <p className="line-clamp-1">{textSlicer(product.description)}</p>
       <div className="flex space-x-2 items-center my-4">
-        <span className="w-5 h-5 bg-red-400 rounded-full cursor-pointer"></span>
-        <span className="w-5 h-5 bg-red-400 rounded-full cursor-pointer"></span>
-        <span className="w-5 h-5 bg-red-400 rounded-full cursor-pointer"></span>
-        <span className="w-5 h-5 bg-red-400 rounded-full cursor-pointer"></span>
+        {product.colors.map((color) => (
+          <span
+            className={`w-5 h-5 rounded-full cursor-pointer`}
+            style={{ backgroundColor: `${color}` }}
+          ></span>
+        ))}
       </div>
 
       <div className="flex  justify-between items-center">
