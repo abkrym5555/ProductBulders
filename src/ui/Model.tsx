@@ -20,7 +20,7 @@ function Model({ closeModel, isOpen, title, children }: IModelProps) {
           <div className="flex min-h-full items-center justify-center p-4">
             <DialogPanel
               transition
-              className="w-full max-w-md rounded-xl bg-white p-6  duration-300 ease-out data-closed:transform-[scale(95%)] shadow-xl data-closed:opacity-0"
+              className="w-full max-w-md rounded-lg bg-white p-6  duration-300 ease-out data-closed:transform-[scale(95%)] shadow-xl data-closed:opacity-0"
             >
               {title && (
                 <DialogTitle

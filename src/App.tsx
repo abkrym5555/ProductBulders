@@ -1,8 +1,9 @@
 import { useState } from "react";
 import ProductCard from "./components/ProductCard";
-import { productList } from "./data";
+import { productList, formInputsList } from "./data";
 import Model from "./ui/Model";
 import Button from "./ui/Button";
+import Input from "./ui/Input";
 
 function App() {
   //-------------states---------------------------//
@@ -22,6 +23,18 @@ function App() {
     <ProductCard key={product.id} product={product} />
   ));
 
+  const renderAllInputList = formInputsList.map((input) => (
+    <div className="flex flex-col">
+      <label
+        htmlFor={input.id}
+        className="mb-px text-sm font-medium text-gray-700"
+      >
+        {input.label}
+      </label>
+      <Input type={input.type} id={input.id} name={input.name} />
+    </div>
+  ));
+
   return (
     <div className="container">
       <Button className="bg-indigo-700 hover:bg-indigo-800" onClick={openModel}>
@@ -34,15 +47,20 @@ function App() {
         {renderProuductList}
       </div>
       <Model isOpen={isOpen} closeModel={closeModel} title="Add a new product">
-        <div className="flex items-center gap-2">
-          <Button className="bg-indigo-700 hover:bg-indigo-800">Submit</Button>
-          <Button
-            className="bg-gray-300 hover:bg-gray-400"
-            onClick={closeModel}
-          >
-            Cancel
-          </Button>
-        </div>
+        <form className="space-y-3">
+          {renderAllInputList}
+          <div className="flex items-center gap-2">
+            <Button className="bg-indigo-700 hover:bg-indigo-800">
+              Submit
+            </Button>
+            <Button
+              className="bg-gray-400 hover:bg-gray-500"
+              onClick={closeModel}
+            >
+              Cancel
+            </Button>
+          </div>
+        </form>
       </Model>
     </div>
   );
