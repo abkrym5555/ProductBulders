@@ -1,12 +1,26 @@
-import { useState } from "react";
+import { useState, type ChangeEvent } from "react";
 import ProductCard from "./components/ProductCard";
 import { productList, formInputsList } from "./data";
 import Model from "./ui/Model";
 import Button from "./ui/Button";
 import Input from "./ui/Input";
+import type { IProduct } from "./interfaces/intrface";
+
+const initialProduct: IProduct = {
+  title: "",
+  description: "",
+  imageURL: "",
+  price: "",
+  colors: [],
+  category: {
+    name: "",
+    imageURL: "",
+  },
+};
 
 function App() {
   //-------------states---------------------------//
+  const [prouduct, setprouduct] = useState(initialProduct);
   const [isOpen, setIsOpen] = useState(false);
 
   //------------helper fun------------------------//
@@ -16,6 +30,11 @@ function App() {
 
   function closeModel() {
     setIsOpen(false);
+  }
+
+  function onChangeHandler(e: ChangeEvent<HTMLInputElement>) {
+    const { name, value } = e.target;
+    setprouduct({ ...prouduct, [name]: value });
   }
 
   //------------render------------------------//
@@ -31,7 +50,13 @@ function App() {
       >
         {input.label}
       </label>
-      <Input type={input.type} id={input.id} name={input.name} />
+      <Input
+        type={input.type}
+        id={input.id}
+        name={input.name}
+        value={""}
+        onChange={onChangeHandler}
+      />
     </div>
   ));
 
