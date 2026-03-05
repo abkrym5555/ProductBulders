@@ -5,6 +5,7 @@ import Model from "./ui/Model";
 import Button from "./ui/Button";
 import Input from "./ui/Input";
 import type { IProduct } from "./interfaces/intrface";
+import { productValidation } from "./validation";
 
 const initialProduct: IProduct = {
   title: "",
@@ -37,13 +38,30 @@ function App() {
     setprouduct({ ...prouduct, [name]: value });
   }
 
+  function onCancelHandler(e: ChangeEvent<HTMLInputElement>) {
+    e.preventDefault();
+    setprouduct(initialProduct);
+    closeModel();
+  }
+
+  function onSubmitHandler(e: ChangeEvent<HTMLInputElement>) {
+    e.preventDefault();
+    const errors = productValidation({
+      title: prouduct.title,
+      description: prouduct.description,
+      imageURL: prouduct.imageURL,
+      price: prouduct.price,
+    });
+    console.log(errors);
+  }
+
   //------------render------------------------//
   const renderProuductList = productList.map((product) => (
     <ProductCard key={product.id} product={product} />
   ));
 
   const renderAllInputList = formInputsList.map((input) => (
-    <div className="flex flex-col">
+    <div className="flex flex-col" key={input.id}>
       <label
         htmlFor={input.id}
         className="mb-px text-sm font-medium text-gray-700"
@@ -72,7 +90,7 @@ function App() {
         {renderProuductList}
       </div>
       <Model isOpen={isOpen} closeModel={closeModel} title="Add a new product">
-        <form className="space-y-3">
+        <form className="space-y-3" onSubmit={onSubmitHandler}>
           {renderAllInputList}
           <div className="flex items-center gap-2">
             <Button className="bg-indigo-700 hover:bg-indigo-800">
@@ -80,7 +98,7 @@ function App() {
             </Button>
             <Button
               className="bg-gray-400 hover:bg-gray-500"
-              onClick={closeModel}
+              onClick={onCancelHandler}
             >
               Cancel
             </Button>
