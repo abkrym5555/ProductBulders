@@ -7,6 +7,8 @@
  * @property {string} price - The price of the product as a string.
  */
 
+import type { IProductValditon } from "../interfaces/intrface";
+
 /**
  * Validates product data and returns an object containing error messages.
  * * @param {IProductValditon} product - The product object to validate.
@@ -16,13 +18,6 @@
  * const errors = productValidation({ title: 'Short', ... });
  * if (errors.title) console.error(errors.title);
  */
-
-interface IProductValditon {
-  title: string;
-  description: string;
-  imageURL: string;
-  price: string;
-}
 
 export const productValidation = (product: IProductValditon) => {
   const errors = {
@@ -50,7 +45,7 @@ export const productValidation = (product: IProductValditon) => {
       "Product description must be between 10 and 800 characters !";
   }
 
-  if (!product.imageURL.trim() || validUrl) {
+  if (!product.imageURL.trim() || !validUrl) {
     errors.imageURL = "Valid image URL is require";
   }
 

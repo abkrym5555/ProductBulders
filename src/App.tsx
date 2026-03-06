@@ -4,8 +4,9 @@ import { productList, formInputsList } from "./data";
 import Model from "./ui/Model";
 import Button from "./ui/Button";
 import Input from "./ui/Input";
-import type { IProduct } from "./interfaces/intrface";
+import type { IProduct, IProductValditon } from "./interfaces/intrface";
 import { productValidation } from "./validation";
+import ErorrMassega from "./components/ErorrMassega";
 
 const initialProduct: IProduct = {
   title: "",
@@ -19,9 +20,17 @@ const initialProduct: IProduct = {
   },
 };
 
+const productValdErrMsg: IProductValditon = {
+  title: "",
+  description: "",
+  imageURL: "",
+  price: "",
+};
+
 function App() {
   //-------------states---------------------------//
   const [prouduct, setprouduct] = useState(initialProduct);
+  const [errorMsgs, seterrorMsgs] = useState(productValdErrMsg);
   const [isOpen, setIsOpen] = useState(false);
 
   //------------helper fun------------------------//
@@ -36,23 +45,28 @@ function App() {
   function onChangeHandler(e: ChangeEvent<HTMLInputElement>) {
     const { name, value } = e.target;
     setprouduct({ ...prouduct, [name]: value });
+    seterrorMsgs({ ...errorMsgs, [name]: "" });
   }
 
   function onCancelHandler(e: ChangeEvent<HTMLInputElement>) {
     e.preventDefault();
     setprouduct(initialProduct);
+    seterrorMsgs(productValdErrMsg);
     closeModel();
   }
 
   function onSubmitHandler(e: ChangeEvent<HTMLInputElement>) {
     e.preventDefault();
-    const errors = productValidation({
-      title: prouduct.title,
-      description: prouduct.description,
-      imageURL: prouduct.imageURL,
-      price: prouduct.price,
-    });
-    console.log(errors);
+    const { price, description, imageURL, title } = prouduct;
+
+    seterrorMsgs(productValidation({ price, description, imageURL, title }));
+
+    const hasErrorMessage = Object.values(errorMsgs).some((val) => val !== "");
+
+    if (!hasErrorMessage) {
+      console.log("has no error");
+      return;
+    }
   }
 
   //------------render------------------------//
@@ -75,18 +89,20 @@ function App() {
         value={prouduct[input.name]}
         onChange={onChangeHandler}
       />
+
+      <ErorrMassega msg={errorMsgs[input.name]} key={input.id} />
     </div>
   ));
 
   return (
     <div className="container">
-      <Button className="bg-indigo-700 hover:bg-indigo-800" onClick={openModel}>
-        open model
-      </Button>
-      <div
-        className="m-5 grid  grid-cols-1 md:grid-cols-2 gap-2 md:gap-4 p-2 rounded-md lg:grid-cols-3 xl:grid-cols-4
-      "
+      <Button
+        className="bg-indigo-700 hover:bg-indigo-800 my-3 "
+        onClick={openModel}
       >
+        build product
+      </Button>
+      <div className="m-5 grid  grid-cols-1 md:grid-cols-2 gap-2 md:gap-4 p-2 rounded-md lg:grid-cols-3 xl:grid-cols-4">
         {renderProuductList}
       </div>
       <Model isOpen={isOpen} closeModel={closeModel} title="Add a new product">
