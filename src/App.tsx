@@ -9,7 +9,7 @@ import { productValidation } from "./validation";
 import ErorrMassega from "./components/ErorrMassega";
 import CircleColor from "./components/CircleColor";
 
-const initialProduct: IProduct = {
+const initialProduct = {
   title: "",
   description: "",
   imageURL: "",
@@ -21,7 +21,7 @@ const initialProduct: IProduct = {
   },
 };
 
-const productValdErrMsg: IProductValditon = {
+const productValdErrMsg = {
   title: "",
   description: "",
   imageURL: "",
@@ -30,9 +30,14 @@ const productValdErrMsg: IProductValditon = {
 
 function App() {
   //-------------states---------------------------//
-  const [prouduct, setprouduct] = useState(initialProduct);
-  const [errorMsgs, seterrorMsgs] = useState(productValdErrMsg);
+  const [prouduct, setprouduct] = useState<IProduct>(initialProduct);
+
+  const [errorMsgs, seterrorMsgs] =
+    useState<IProductValditon>(productValdErrMsg);
+
   const [isOpen, setIsOpen] = useState(false);
+
+  const [tempColors, settempColors] = useState<string[]>([]);
 
   //------------helper fun------------------------//
   function openModel() {
@@ -53,6 +58,7 @@ function App() {
     e.preventDefault();
     setprouduct(initialProduct);
     seterrorMsgs(productValdErrMsg);
+    settempColors([]);
     closeModel();
   }
 
@@ -96,7 +102,15 @@ function App() {
   ));
 
   const rendrAllColors = colors.map((cl) => (
-    <CircleColor bgColor={cl} key={cl} />
+    <CircleColor
+      bgColor={cl}
+      key={cl}
+      onClick={() =>
+        settempColors((cls) =>
+          cls.includes(cl) ? cls.filter((filcl) => cl !== filcl) : [...cls, cl],
+        )
+      }
+    />
   ));
 
   return (
@@ -114,7 +128,19 @@ function App() {
       <Model isOpen={isOpen} closeModel={closeModel} title="Add a new product">
         <form className="space-y-3" onSubmit={onSubmitHandler}>
           {renderAllInputList}
-          <div className="flex gap-2">{rendrAllColors}</div>
+          <div className="flex gap-2 flex-wrap">{rendrAllColors}</div>
+          {tempColors.length ? (
+            <div className="flex gap-2 text-white flex-wrap font-semibold">
+              {tempColors.map((slccol) => (
+                <span
+                  className="rounded-md p-1"
+                  style={{ backgroundColor: slccol }}
+                >
+                  {slccol}
+                </span>
+              ))}
+            </div>
+          ) : null}
           <div className="flex items-center gap-2">
             <Button className="bg-indigo-700 hover:bg-indigo-800">
               Submit
