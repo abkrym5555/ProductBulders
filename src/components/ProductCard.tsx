@@ -1,6 +1,7 @@
 import type { IProduct } from "../interfaces/intrface";
 import Button from "../ui/Button";
 import { textSlicer } from "../utils";
+import CircleColor from "./CircleColor";
 import Image from "./Image";
 
 interface IProductCardProps {
@@ -20,10 +21,7 @@ function ProductCard({ product }: IProductCardProps) {
       <p className="line-clamp-1">{textSlicer(product.description)}</p>
       <div className="flex space-x-2 items-center my-4">
         {product.colors.map((color) => (
-          <span
-            className={`w-5 h-5 rounded-full cursor-pointer`}
-            style={{ backgroundColor: `${color}` }}
-          ></span>
+          <CircleColor bgColor={color} key={color} />
         ))}
       </div>
 

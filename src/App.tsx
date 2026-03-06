@@ -1,12 +1,13 @@
 import { useState, type ChangeEvent } from "react";
 import ProductCard from "./components/ProductCard";
-import { productList, formInputsList } from "./data";
+import { productList, formInputsList, colors } from "./data";
 import Model from "./ui/Model";
 import Button from "./ui/Button";
 import Input from "./ui/Input";
 import type { IProduct, IProductValditon } from "./interfaces/intrface";
 import { productValidation } from "./validation";
 import ErorrMassega from "./components/ErorrMassega";
+import CircleColor from "./components/CircleColor";
 
 const initialProduct: IProduct = {
   title: "",
@@ -94,6 +95,10 @@ function App() {
     </div>
   ));
 
+  const rendrAllColors = colors.map((cl) => (
+    <CircleColor bgColor={cl} key={cl} />
+  ));
+
   return (
     <div className="container">
       <Button
@@ -105,9 +110,11 @@ function App() {
       <div className="m-5 grid  grid-cols-1 md:grid-cols-2 gap-2 md:gap-4 p-2 rounded-md lg:grid-cols-3 xl:grid-cols-4">
         {renderProuductList}
       </div>
+
       <Model isOpen={isOpen} closeModel={closeModel} title="Add a new product">
         <form className="space-y-3" onSubmit={onSubmitHandler}>
           {renderAllInputList}
+          <div className="flex gap-2">{rendrAllColors}</div>
           <div className="flex items-center gap-2">
             <Button className="bg-indigo-700 hover:bg-indigo-800">
               Submit
