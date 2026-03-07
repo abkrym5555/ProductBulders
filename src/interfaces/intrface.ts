@@ -23,6 +23,7 @@ export interface IProductValditon {
   description: string;
   imageURL: string;
   price: string;
+  colors: string[];
 }
 
 export interface ICategory {

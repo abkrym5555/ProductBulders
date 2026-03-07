@@ -5,11 +5,7 @@ import { productList, formInputsList, colors, categories } from "./data";
 import Model from "./ui/Model";
 import Button from "./ui/Button";
 import Input from "./ui/Input";
-import type {
-  ICategory,
-  IProduct,
-  IProductValditon,
-} from "./interfaces/intrface";
+import type { ICategory, IProduct } from "./interfaces/intrface";
 import { productValidation } from "./validation";
 import ErorrMassega from "./components/ErorrMassega";
 import CircleColor from "./components/CircleColor";
@@ -32,6 +28,7 @@ const productValdErrMsg = {
   description: "",
   imageURL: "",
   price: "",
+  clrs: "",
 };
 
 function App() {
@@ -40,8 +37,7 @@ function App() {
 
   const [prouduct, setprouduct] = useState<IProduct>(initialProduct);
 
-  const [errorMsgs, seterrorMsgs] =
-    useState<IProductValditon>(productValdErrMsg);
+  const [errorMsgs, seterrorMsgs] = useState(productValdErrMsg);
 
   const [isOpen, setIsOpen] = useState(false);
 
@@ -76,26 +72,28 @@ function App() {
 
   function onSubmitHandler(e: ChangeEvent<HTMLInputElement>) {
     e.preventDefault();
-    const { price, description, imageURL, title } = prouduct;
-    const errors = productValidation({ price, description, imageURL, title });
+    const { price, description, imageURL, title, colors } = prouduct;
+    const errors = productValidation({
+      price,
+      description,
+      imageURL,
+      title,
+      colors,
+    });
     const hasErrorMessage =
       Object.values(errors).some((val) => val === "") &&
       Object.values(errors).every((val) => val === "");
 
-    if (!hasErrorMessage) {
+    if (!hasErrorMessage && tempColors.length <= 0) {
       seterrorMsgs(errors);
       return;
     }
-    console.log(prouduct);
     setprouducts((prev) => [
       {
         ...prouduct,
         id: uuid(),
         colors: tempColors,
-        category: {
-          name: selectedCategory.name,
-          imageURL: selectedCategory.imageURL,
-        },
+        category: selectedCategory,
       },
       ...prev,
     ]);
@@ -171,6 +169,9 @@ function App() {
             </div>
           ) : null}
           <div className="flex gap-2 flex-wrap">{rendrAllColors}</div>
+          {tempColors.length <= 0 ? (
+            <ErorrMassega msg={errorMsgs.clrs} />
+          ) : null}
           <div className="flex items-center gap-2">
             <Button className="bg-indigo-700 hover:bg-indigo-800">
               Submit
