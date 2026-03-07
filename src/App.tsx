@@ -1,4 +1,5 @@
 import { useState, type ChangeEvent } from "react";
+import { v4 as uuid } from "uuid";
 import ProductCard from "./components/ProductCard";
 import { productList, formInputsList, colors } from "./data";
 import Model from "./ui/Model";
@@ -30,6 +31,8 @@ const productValdErrMsg = {
 
 function App() {
   //-------------states---------------------------//
+  const [prouducts, setprouducts] = useState<IProduct[]>(productList);
+
   const [prouduct, setprouduct] = useState<IProduct>(initialProduct);
 
   const [errorMsgs, seterrorMsgs] =
@@ -46,6 +49,9 @@ function App() {
 
   function closeModel() {
     setIsOpen(false);
+    setprouduct(initialProduct);
+    seterrorMsgs(productValdErrMsg);
+    settempColors([]);
   }
 
   function onChangeHandler(e: ChangeEvent<HTMLInputElement>) {
@@ -56,28 +62,31 @@ function App() {
 
   function onCancelHandler(e: ChangeEvent<HTMLInputElement>) {
     e.preventDefault();
-    setprouduct(initialProduct);
-    seterrorMsgs(productValdErrMsg);
-    settempColors([]);
     closeModel();
   }
 
   function onSubmitHandler(e: ChangeEvent<HTMLInputElement>) {
     e.preventDefault();
     const { price, description, imageURL, title } = prouduct;
-
-    seterrorMsgs(productValidation({ price, description, imageURL, title }));
-
-    const hasErrorMessage = Object.values(errorMsgs).some((val) => val !== "");
+    const errors = productValidation({ price, description, imageURL, title });
+    const hasErrorMessage =
+      Object.values(errors).some((val) => val === "") &&
+      Object.values(errors).every((val) => val === "");
 
     if (!hasErrorMessage) {
-      console.log("has no error");
+      seterrorMsgs(errors);
       return;
     }
+    console.log(prouduct);
+    setprouducts((prev) => [
+      { ...prouduct, id: uuid(), colors: tempColors },
+      ...prev,
+    ]);
+    closeModel();
   }
 
   //------------render------------------------//
-  const renderProuductList = productList.map((product) => (
+  const renderProuductList = prouducts.map((product) => (
     <ProductCard key={product.id} product={product} />
   ));
 

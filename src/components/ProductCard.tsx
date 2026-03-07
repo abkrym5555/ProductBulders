@@ -26,7 +26,7 @@ function ProductCard({ product }: IProductCardProps) {
       </div>
 
       <div className="flex  justify-between items-center">
-        <span className="">5000$</span>
+        <span className="">{product.price}$</span>
         <Image
           url={product.imageURL}
           alt={product.title}
