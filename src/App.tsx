@@ -1,14 +1,19 @@
 import { useState, type ChangeEvent } from "react";
 import { v4 as uuid } from "uuid";
 import ProductCard from "./components/ProductCard";
-import { productList, formInputsList, colors } from "./data";
+import { productList, formInputsList, colors, categories } from "./data";
 import Model from "./ui/Model";
 import Button from "./ui/Button";
 import Input from "./ui/Input";
-import type { IProduct, IProductValditon } from "./interfaces/intrface";
+import type {
+  ICategory,
+  IProduct,
+  IProductValditon,
+} from "./interfaces/intrface";
 import { productValidation } from "./validation";
 import ErorrMassega from "./components/ErorrMassega";
 import CircleColor from "./components/CircleColor";
+import SelectMenue from "./ui/SelectMenue";
 
 const initialProduct = {
   title: "",
@@ -41,6 +46,10 @@ function App() {
   const [isOpen, setIsOpen] = useState(false);
 
   const [tempColors, settempColors] = useState<string[]>([]);
+
+  const [selectedCategory, setSelectedCategory] = useState<ICategory>(
+    categories[0],
+  );
 
   //------------helper fun------------------------//
   function openModel() {
@@ -79,7 +88,15 @@ function App() {
     }
     console.log(prouduct);
     setprouducts((prev) => [
-      { ...prouduct, id: uuid(), colors: tempColors },
+      {
+        ...prouduct,
+        id: uuid(),
+        colors: tempColors,
+        category: {
+          name: selectedCategory.name,
+          imageURL: selectedCategory.imageURL,
+        },
+      },
       ...prev,
     ]);
     closeModel();
@@ -137,7 +154,10 @@ function App() {
       <Model isOpen={isOpen} closeModel={closeModel} title="Add a new product">
         <form className="space-y-3" onSubmit={onSubmitHandler}>
           {renderAllInputList}
-          <div className="flex gap-2 flex-wrap">{rendrAllColors}</div>
+          <SelectMenue
+            selected={selectedCategory}
+            setSelected={setSelectedCategory}
+          />
           {tempColors.length ? (
             <div className="flex gap-2 text-white flex-wrap font-semibold">
               {tempColors.map((slccol) => (
@@ -150,6 +170,7 @@ function App() {
               ))}
             </div>
           ) : null}
+          <div className="flex gap-2 flex-wrap">{rendrAllColors}</div>
           <div className="flex items-center gap-2">
             <Button className="bg-indigo-700 hover:bg-indigo-800">
               Submit
