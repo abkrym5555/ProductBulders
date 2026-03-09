@@ -84,7 +84,7 @@ function App() {
       Object.values(errors).some((val) => val === "") &&
       Object.values(errors).every((val) => val === "");
 
-    if (!hasErrorMessage && tempColors.length <= 0) {
+    if (!hasErrorMessage || tempColors.length <= 0) {
       seterrorMsgs(errors);
       return;
     }
