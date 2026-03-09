@@ -28,7 +28,6 @@ const productValdErrMsg = {
   description: "",
   imageURL: "",
   price: "",
-  clrs: "",
 };
 
 function App() {
@@ -61,6 +60,7 @@ function App() {
 
   function onChangeHandler(e: ChangeEvent<HTMLInputElement>) {
     const { name, value } = e.target;
+
     setprouduct({ ...prouduct, [name]: value });
     seterrorMsgs({ ...errorMsgs, [name]: "" });
   }
@@ -84,7 +84,7 @@ function App() {
       Object.values(errors).some((val) => val === "") &&
       Object.values(errors).every((val) => val === "");
 
-    if (!hasErrorMessage || tempColors.length <= 0) {
+    if (!hasErrorMessage) {
       seterrorMsgs(errors);
       return;
     }
@@ -169,9 +169,7 @@ function App() {
             </div>
           ) : null}
           <div className="flex gap-2 flex-wrap">{rendrAllColors}</div>
-          {tempColors.length <= 0 ? (
-            <ErorrMassega msg={errorMsgs.clrs} />
-          ) : null}
+
           <div className="flex items-center gap-2">
             <Button className="bg-indigo-700 hover:bg-indigo-800">
               Submit

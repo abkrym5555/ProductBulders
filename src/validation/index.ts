@@ -25,7 +25,6 @@ export const productValidation = (product: IProductValditon) => {
     description: "",
     imageURL: "",
     price: "",
-    clrs: "",
   };
 
   const validUrl = /^(ftp|http|https):\/\/[^ "]+$/.test(product.imageURL);
@@ -52,9 +51,6 @@ export const productValidation = (product: IProductValditon) => {
 
   if (!product.price.trim() || isNaN(Number(product.price))) {
     errors.price = "Valid Price is require";
-  }
-  if (product.colors.length <= 0) {
-    errors.clrs = "Must choose at least one color";
   }
   return errors;
 };

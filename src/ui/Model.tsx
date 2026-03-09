@@ -1,4 +1,5 @@
 import { Dialog, DialogPanel, DialogTitle } from "@headlessui/react";
+import type { ReactNode } from "react";
 
 interface IModelProps {
   isOpen: boolean;
