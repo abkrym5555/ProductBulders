@@ -11,7 +11,7 @@ import { categories } from "../data";
 import type { ICategory } from "../interfaces/intrface";
 
 interface ISelectMenueProps {
-  selected: ICategory;
+  selected: { name: string; imageURL: string };
   setSelected: (selected: ICategory) => void;
 }
 

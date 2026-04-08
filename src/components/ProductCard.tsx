@@ -6,9 +6,33 @@ import Image from "./Image";
 
 interface IProductCardProps {
   product: IProduct;
+  setproductToEdit: (prdct: IProduct) => void;
+  openEditModel: () => void;
+  setisOpeDeletModel: (val: boolean) => void;
+  idx: number;
+  setprouductIndex: (idx: number) => void;
 }
 
-function ProductCard({ product }: IProductCardProps) {
+function ProductCard({
+  product,
+  setproductToEdit,
+  openEditModel,
+  idx,
+  setprouductIndex,
+  setisOpeDeletModel,
+}: IProductCardProps) {
+  //----------------- handler---------------------------//
+  function onEditHand() {
+    setproductToEdit(product);
+    openEditModel();
+    setprouductIndex(idx);
+  }
+
+  const onDeletHand = () => {
+    setisOpeDeletModel(true);
+    setprouductIndex(idx);
+  };
+
   return (
     <div className=" max-w-sm md:max-w-lg mx-auto md:mx-0 flex flex-col p-2 border rounded-md">
       <Image
@@ -35,8 +59,12 @@ function ProductCard({ product }: IProductCardProps) {
       </div>
 
       <div className="flex items-center gap-2 mt-5">
-        <Button className=" bg-indigo-700 ">edit </Button>
-        <Button className=" bg-red-700 ">destroy</Button>
+        <Button className=" bg-indigo-700 " onClick={onEditHand}>
+          edit{" "}
+        </Button>
+        <Button className=" bg-red-700 " onClick={onDeletHand}>
+          destroy
+        </Button>
       </div>
     </div>
   );
